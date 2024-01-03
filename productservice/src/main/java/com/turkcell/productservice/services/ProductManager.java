@@ -20,6 +20,7 @@ public class ProductManager implements ProductService{
                 .price(request.getPrice())
                 .description(request.getDescription())
                 .stock(request.getStock())
+                .inventoryCode(request.getInventoryCode())
                 .build();
         product = productRepository.save(product);
 
@@ -29,5 +30,14 @@ public class ProductManager implements ProductService{
                 .name(product.getName())
                 .build();
         return null;
+    }
+
+    @Override
+    public Boolean getByInventoryCode(String code, int requiredStock) {
+
+        Product product = productRepository.findByInventoryCode(code);
+        if(product==null || product.getStock()<requiredStock)
+            return false;
+        return true;
     }
 }
